@@ -1,9 +1,9 @@
-// backend/src/models/Project.ts
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IProject extends Document {
     name: string;
     description: string;
+    status: 'active' | 'inactive' | 'completed';
     color: string;
     teamMembers: mongoose.Types.ObjectId[];
     createdBy: mongoose.Types.ObjectId;
@@ -21,6 +21,12 @@ const ProjectSchema = new Schema<IProject>(
         description: {
             type: String,
             trim: true,
+            default: '',
+        },
+        status: {
+            type: String,
+            enum: ['active', 'inactive', 'completed'],
+            default: 'active',
         },
         color: {
             type: String,

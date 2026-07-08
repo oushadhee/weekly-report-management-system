@@ -4,12 +4,13 @@ import { AuthRequest } from '../middleware/auth';
 
 export const createProject = async (req: AuthRequest, res: Response) => {
     try {
-        const { name, description, color } = req.body;
+        const { name, description, status, color } = req.body;
 
         const project = await Project.create({
             name,
-            description,
-            color,
+            description: description || '',
+            status: status || 'active',
+            color: color || '#6366f1',
             createdBy: req.user?._id,
         });
 
@@ -26,7 +27,8 @@ export const getProjects = async (req: AuthRequest, res: Response) => {
     try {
         const projects = await Project.find()
             .populate('createdBy', 'name email')
-            .populate('teamMembers', 'name email');
+            .populate('teamMembers', 'name email')
+            .sort({ createdAt: -1 });
 
         res.json({
             success: true,

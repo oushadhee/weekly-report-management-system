@@ -1,6 +1,6 @@
-// frontend/src/pages/MyReports.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_URL } from '../utils/config';
 import Layout from '../components/Layout';
@@ -20,35 +20,15 @@ interface Report {
     createdAt: string;
 }
 
-interface Project {
-    _id: string;
-    name: string;
-    color: string;
-}
-
 const MyReports: React.FC = () => {
-    const { user, isManager } = useAuth();
+    const navigate = useNavigate();
+    const { user } = useAuth();
     const [reports, setReports] = useState<Report[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [showCreateForm, setShowCreateForm] = useState(false);
-
-    // Form state
-    const [formData, setFormData] = useState({
-        weekStart: '',
-        weekEnd: '',
-        project: '',
-        tasksCompleted: [''],
-        tasksPlanned: [''],
-        blockers: [''],
-        hoursWorked: 0,
-        notes: '',
-    });
 
     useEffect(() => {
         fetchReports();
-        fetchProjects();
     }, []);
 
     const fetchReports = async () => {
@@ -57,70 +37,6 @@ const MyReports: React.FC = () => {
             setReports(response.data.reports);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to fetch reports');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchProjects = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/projects`);
-            setProjects(response.data.projects);
-        } catch (err: any) {
-            console.error('Failed to fetch projects:', err);
-        }
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleArrayInputChange = (index: number, field: 'tasksCompleted' | 'tasksPlanned' | 'blockers', value: string) => {
-        const newArray = [...formData[field]];
-        newArray[index] = value;
-        setFormData({ ...formData, [field]: newArray });
-    };
-
-    const addArrayItem = (field: 'tasksCompleted' | 'tasksPlanned' | 'blockers') => {
-        setFormData({ ...formData, [field]: [...formData[field], ''] });
-    };
-
-    const removeArrayItem = (index: number, field: 'tasksCompleted' | 'tasksPlanned' | 'blockers') => {
-        const newArray = formData[field].filter((_, i) => i !== index);
-        setFormData({ ...formData, [field]: newArray });
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-
-        const reportData = {
-            ...formData,
-            tasksCompleted: formData.tasksCompleted.filter(t => t.trim()),
-            tasksPlanned: formData.tasksPlanned.filter(t => t.trim()),
-            blockers: formData.blockers.filter(b => b.trim()),
-        };
-
-        try {
-            const response = await axios.post(`${API_URL}/reports`, reportData);
-            setReports([response.data.report, ...reports]);
-            setShowCreateForm(false);
-            setFormData({
-                weekStart: '',
-                weekEnd: '',
-                project: '',
-                tasksCompleted: [''],
-                tasksPlanned: [''],
-                blockers: [''],
-                hoursWorked: 0,
-                notes: '',
-            });
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Failed to create report');
         } finally {
             setLoading(false);
         }
@@ -142,7 +58,7 @@ const MyReports: React.FC = () => {
         return `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
     };
 
-    if (loading && reports.length === 0) {
+    if (loading) {
         return (
             <Layout>
                 <div className="flex justify-center items-center h-64">
@@ -155,214 +71,18 @@ const MyReports: React.FC = () => {
     return (
         <Layout>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">My Weekly Reports</h1>
-                {!showCreateForm && (
-                    <button
-                        onClick={() => setShowCreateForm(true)}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-                    >
-                        New Report
-                    </button>
-                )}
+                <h1 className="text-2xl font-bold text-gray-900">📋 My Reports</h1>
+                <button
+                    onClick={() => navigate('/create-report')}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                >
+                    + New Report
+                </button>
             </div>
 
             {error && (
-                <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
                     {error}
-                </div>
-            )}
-
-            {showCreateForm && (
-                <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Create Weekly Report</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Week Start
-                                </label>
-                                <input
-                                    type="date"
-                                    name="weekStart"
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    value={formData.weekStart}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Week End
-                                </label>
-                                <input
-                                    type="date"
-                                    name="weekEnd"
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                    value={formData.weekEnd}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Project
-                            </label>
-                            <select
-                                name="project"
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.project}
-                                onChange={handleInputChange}
-                            >
-                                <option value="">Select a project</option>
-                                {projects.map((project) => (
-                                    <option key={project._id} value={project._id}>
-                                        {project.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Tasks Completed
-                            </label>
-                            {formData.tasksCompleted.map((task, index) => (
-                                <div key={index} className="flex gap-2 mb-2">
-                                    <input
-                                        type="text"
-                                        value={task}
-                                        onChange={(e) => handleArrayInputChange(index, 'tasksCompleted', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                        placeholder="Enter completed task"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeArrayItem(index, 'tasksCompleted')}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={() => addArrayItem('tasksCompleted')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
-                            >
-                                + Add task
-                            </button>
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Tasks Planned for Next Week
-                            </label>
-                            {formData.tasksPlanned.map((task, index) => (
-                                <div key={index} className="flex gap-2 mb-2">
-                                    <input
-                                        type="text"
-                                        value={task}
-                                        onChange={(e) => handleArrayInputChange(index, 'tasksPlanned', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                        placeholder="Enter planned task"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeArrayItem(index, 'tasksPlanned')}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={() => addArrayItem('tasksPlanned')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
-                            >
-                                + Add planned task
-                            </button>
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Blockers / Challenges
-                            </label>
-                            {formData.blockers.map((blocker, index) => (
-                                <div key={index} className="flex gap-2 mb-2">
-                                    <input
-                                        type="text"
-                                        value={blocker}
-                                        onChange={(e) => handleArrayInputChange(index, 'blockers', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                        placeholder="Enter blocker"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeArrayItem(index, 'blockers')}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={() => addArrayItem('blockers')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
-                            >
-                                + Add blocker
-                            </button>
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Hours Worked
-                            </label>
-                            <input
-                                type="number"
-                                name="hoursWorked"
-                                min="0"
-                                max="168"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.hoursWorked}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Notes / Links
-                            </label>
-                            <textarea
-                                name="notes"
-                                rows={3}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                                value={formData.notes}
-                                onChange={handleInputChange}
-                                placeholder="Additional notes or links"
-                            />
-                        </div>
-
-                        <div className="mt-6 flex gap-3">
-                            <button
-                                type="submit"
-                                className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-                            >
-                                Save Draft
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setShowCreateForm(false)}
-                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
                 </div>
             )}
 
@@ -381,11 +101,8 @@ const MyReports: React.FC = () => {
                                     </h3>
                                     <div className="flex items-center gap-2 mt-1">
                                         <span
-                                            className="px-2 py-1 text-xs rounded-full"
-                                            style={{
-                                                backgroundColor: report.project?.color || '#6366f1',
-                                                color: 'white',
-                                            }}
+                                            className="px-2 py-1 text-xs rounded-full text-white"
+                                            style={{ backgroundColor: report.project?.color || '#6366f1' }}
                                         >
                                             {report.project?.name || 'No Project'}
                                         </span>
@@ -393,7 +110,7 @@ const MyReports: React.FC = () => {
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-yellow-100 text-yellow-800'
                                             }`}>
-                                            {report.status}
+                                            {report.status === 'submitted' ? '✅ Submitted' : '📝 Draft'}
                                         </span>
                                         {report.submittedAt && (
                                             <span className="text-xs text-gray-500">
@@ -412,7 +129,7 @@ const MyReports: React.FC = () => {
                                                 Submit
                                             </button>
                                             <button
-                                                onClick={() => {/* Navigate to edit */ }}
+                                                onClick={() => navigate(`/edit-report/${report._id}`)}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-700"
                                             >
                                                 Edit
@@ -424,7 +141,7 @@ const MyReports: React.FC = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <h4 className="font-medium text-gray-700 mb-1">Tasks Completed</h4>
+                                    <h4 className="font-medium text-gray-700 mb-1">✅ Tasks Completed</h4>
                                     <ul className="list-disc list-inside space-y-1 text-gray-600">
                                         {report.tasksCompleted.map((task, idx) => (
                                             <li key={idx} className="text-sm">{task}</li>
@@ -435,7 +152,7 @@ const MyReports: React.FC = () => {
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 className="font-medium text-gray-700 mb-1">Tasks Planned</h4>
+                                    <h4 className="font-medium text-gray-700 mb-1">📅 Tasks Planned</h4>
                                     <ul className="list-disc list-inside space-y-1 text-gray-600">
                                         {report.tasksPlanned.map((task, idx) => (
                                             <li key={idx} className="text-sm">{task}</li>
@@ -449,7 +166,7 @@ const MyReports: React.FC = () => {
 
                             {report.blockers && report.blockers.length > 0 && (
                                 <div className="mt-4">
-                                    <h4 className="font-medium text-gray-700 mb-1">Blockers</h4>
+                                    <h4 className="font-medium text-gray-700 mb-1">🚨 Blockers</h4>
                                     <ul className="list-disc list-inside space-y-1 text-red-600">
                                         {report.blockers.map((blocker, idx) => (
                                             <li key={idx} className="text-sm">{blocker}</li>
@@ -461,10 +178,10 @@ const MyReports: React.FC = () => {
                             {(report.hoursWorked > 0 || report.notes) && (
                                 <div className="mt-4 pt-4 border-t border-gray-200">
                                     {report.hoursWorked > 0 && (
-                                        <p className="text-sm text-gray-600">Hours: {report.hoursWorked}h</p>
+                                        <p className="text-sm text-gray-600">⏰ Hours: {report.hoursWorked}h</p>
                                     )}
                                     {report.notes && (
-                                        <p className="text-sm text-gray-600 mt-1">{report.notes}</p>
+                                        <p className="text-sm text-gray-600 mt-1">📝 {report.notes}</p>
                                     )}
                                 </div>
                             )}
