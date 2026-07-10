@@ -56,14 +56,12 @@ const EditReport: React.FC = () => {
             const response = await axios.get(`${API_URL}/reports/${id}`);
             const report = response.data.report;
 
-            // Check if report is submitted
             if (report.status === 'submitted') {
                 setError('This report has already been submitted and cannot be edited.');
                 setLoading(false);
                 return;
             }
 
-            // Convert project to string if it's an object
             const projectId = typeof report.project === 'object' ? report.project._id : report.project;
 
             setFormData({
@@ -173,7 +171,7 @@ const EditReport: React.FC = () => {
                         onClick={() => navigate('/my-reports')}
                         className="text-gray-600 hover:text-gray-900"
                     >
-                        ← Back to Reports
+                        Back to Reports
                     </button>
                 </div>
 
@@ -195,7 +193,6 @@ const EditReport: React.FC = () => {
                     </div>
                 ) : (
                     <form onSubmit={handleUpdate} className="bg-white shadow-md rounded-lg p-6">
-                        {/* Week Range */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -205,7 +202,7 @@ const EditReport: React.FC = () => {
                                     type="date"
                                     name="weekStart"
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                     value={formData.weekStart}
                                     onChange={handleInputChange}
                                 />
@@ -218,14 +215,13 @@ const EditReport: React.FC = () => {
                                     type="date"
                                     name="weekEnd"
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                     value={formData.weekEnd}
                                     onChange={handleInputChange}
                                 />
                             </div>
                         </div>
 
-                        {/* Project */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Project *
@@ -233,7 +229,7 @@ const EditReport: React.FC = () => {
                             <select
                                 name="project"
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                 value={formData.project as string}
                                 onChange={handleInputChange}
                             >
@@ -246,7 +242,6 @@ const EditReport: React.FC = () => {
                             </select>
                         </div>
 
-                        {/* Tasks Completed */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Tasks Completed *
@@ -257,7 +252,7 @@ const EditReport: React.FC = () => {
                                         type="text"
                                         value={task}
                                         onChange={(e) => handleArrayInputChange(index, 'tasksCompleted', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                         placeholder="Enter completed task"
                                     />
                                     <button
@@ -265,20 +260,19 @@ const EditReport: React.FC = () => {
                                         onClick={() => removeArrayItem(index, 'tasksCompleted')}
                                         className="text-red-600 hover:text-red-800"
                                     >
-                                        ✕
+                                        Remove
                                     </button>
                                 </div>
                             ))}
                             <button
                                 type="button"
                                 onClick={() => addArrayItem('tasksCompleted')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-[#549E7E] hover:text-[#386B55]"
                             >
                                 + Add task
                             </button>
                         </div>
 
-                        {/* Tasks Planned */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Tasks Planned for Next Week *
@@ -289,7 +283,7 @@ const EditReport: React.FC = () => {
                                         type="text"
                                         value={task}
                                         onChange={(e) => handleArrayInputChange(index, 'tasksPlanned', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                         placeholder="Enter planned task"
                                     />
                                     <button
@@ -297,20 +291,19 @@ const EditReport: React.FC = () => {
                                         onClick={() => removeArrayItem(index, 'tasksPlanned')}
                                         className="text-red-600 hover:text-red-800"
                                     >
-                                        ✕
+                                        Remove
                                     </button>
                                 </div>
                             ))}
                             <button
                                 type="button"
                                 onClick={() => addArrayItem('tasksPlanned')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-[#549E7E] hover:text-[#386B55]"
                             >
                                 + Add planned task
                             </button>
                         </div>
 
-                        {/* Blockers */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Blockers / Challenges
@@ -321,7 +314,7 @@ const EditReport: React.FC = () => {
                                         type="text"
                                         value={blocker}
                                         onChange={(e) => handleArrayInputChange(index, 'blockers', e.target.value)}
-                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                         placeholder="Enter blocker"
                                     />
                                     <button
@@ -329,20 +322,19 @@ const EditReport: React.FC = () => {
                                         onClick={() => removeArrayItem(index, 'blockers')}
                                         className="text-red-600 hover:text-red-800"
                                     >
-                                        ✕
+                                        Remove
                                     </button>
                                 </div>
                             ))}
                             <button
                                 type="button"
                                 onClick={() => addArrayItem('blockers')}
-                                className="text-sm text-indigo-600 hover:text-indigo-800"
+                                className="text-sm text-[#549E7E] hover:text-[#386B55]"
                             >
                                 + Add blocker
                             </button>
                         </div>
 
-                        {/* Hours Worked */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Hours Worked
@@ -352,13 +344,12 @@ const EditReport: React.FC = () => {
                                 name="hoursWorked"
                                 min="0"
                                 max="168"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                 value={formData.hoursWorked}
                                 onChange={handleInputChange}
                             />
                         </div>
 
-                        {/* Notes */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Notes / Links
@@ -366,19 +357,18 @@ const EditReport: React.FC = () => {
                             <textarea
                                 name="notes"
                                 rows={3}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                 value={formData.notes}
                                 onChange={handleInputChange}
                                 placeholder="Additional notes or links"
                             />
                         </div>
 
-                        {/* Buttons */}
                         <div className="flex gap-3">
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
+                                className="bg-[#386B55] text-white px-6 py-2 rounded-lg hover:bg-[#284D3D] disabled:opacity-50"
                             >
                                 {loading ? 'Saving...' : 'Update Report'}
                             </button>
@@ -386,14 +376,14 @@ const EditReport: React.FC = () => {
                                 type="button"
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className="bg-primary-700 text-white px-6 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
+                                className="bg-[#549E7E] text-white px-6 py-2 rounded-lg hover:bg-[#48896D] disabled:opacity-50"
                             >
                                 Submit Report
                             </button>
                             <button
                                 type="button"
                                 onClick={() => navigate('/my-reports')}
-                                className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-gray-300"
+                                className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400"
                             >
                                 Cancel
                             </button>

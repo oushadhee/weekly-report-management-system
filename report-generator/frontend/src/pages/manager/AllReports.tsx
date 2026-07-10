@@ -100,21 +100,25 @@ const AllReports: React.FC = () => {
             filtered = filtered.filter(r => r.status === filters.status);
         }
 
-        // Filter by Week
+        // Filter by Week (compare only date part, not time)
         if (filters.week) {
-            const weekDate = new Date(filters.week);
+            const selectedDate = new Date(filters.week);
+            const selectedDateString = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+
             filtered = filtered.filter(r => {
-                const start = new Date(r.weekStart);
-                return start.getTime() === weekDate.getTime();
+                const reportStartDate = new Date(r.weekStart).toISOString().split('T')[0]; // YYYY-MM-DD
+                return reportStartDate === selectedDateString;
             });
         }
 
-        // Filter by Date Range
+        // Filter by Date Range (filter reports created on this specific date)
         if (filters.dateRange) {
-            const date = new Date(filters.dateRange);
+            const selectedDate = new Date(filters.dateRange);
+            const selectedDateString = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+
             filtered = filtered.filter(r => {
-                const created = new Date(r.createdAt);
-                return created.toDateString() === date.toDateString();
+                const reportCreatedDate = new Date(r.createdAt).toISOString().split('T')[0]; // YYYY-MM-DD
+                return reportCreatedDate === selectedDateString;
             });
         }
 

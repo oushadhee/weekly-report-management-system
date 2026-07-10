@@ -97,16 +97,6 @@ const CreateReport: React.FC = () => {
             const response = await axios.post(`${API_URL}/reports`, reportData);
             setSuccess(`Report ${status === 'submitted' ? 'submitted' : 'saved as draft'} successfully!`);
 
-            // Reset form
-            setFormData({
-                ...formData,
-                tasksCompleted: [''],
-                tasksPlanned: [''],
-                blockers: [''],
-                hoursWorked: 0,
-                notes: '',
-            });
-
             setTimeout(() => {
                 navigate('/my-reports');
             }, 1500);
@@ -145,7 +135,7 @@ const CreateReport: React.FC = () => {
                                 type="date"
                                 name="weekStart"
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                 value={formData.weekStart}
                                 onChange={handleInputChange}
                             />
@@ -158,7 +148,7 @@ const CreateReport: React.FC = () => {
                                 type="date"
                                 name="weekEnd"
                                 required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                 value={formData.weekEnd}
                                 onChange={handleInputChange}
                             />
@@ -173,7 +163,7 @@ const CreateReport: React.FC = () => {
                         <select
                             name="project"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                             value={formData.project}
                             onChange={handleInputChange}
                         >
@@ -197,7 +187,7 @@ const CreateReport: React.FC = () => {
                                     type="text"
                                     value={task}
                                     onChange={(e) => handleArrayInputChange(index, 'tasksCompleted', e.target.value)}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                     placeholder="Enter completed task"
                                 />
                                 <button
@@ -205,14 +195,14 @@ const CreateReport: React.FC = () => {
                                     onClick={() => removeArrayItem(index, 'tasksCompleted')}
                                     className="text-red-600 hover:text-red-800"
                                 >
-                                    ✕
+                                    Remove
                                 </button>
                             </div>
                         ))}
                         <button
                             type="button"
                             onClick={() => addArrayItem('tasksCompleted')}
-                            className="text-sm text-indigo-600 hover:text-indigo-800"
+                            className="text-sm text-[#549E7E] hover:text-[#386B55]"
                         >
                             + Add task
                         </button>
@@ -229,7 +219,7 @@ const CreateReport: React.FC = () => {
                                     type="text"
                                     value={task}
                                     onChange={(e) => handleArrayInputChange(index, 'tasksPlanned', e.target.value)}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                     placeholder="Enter planned task"
                                 />
                                 <button
@@ -237,14 +227,14 @@ const CreateReport: React.FC = () => {
                                     onClick={() => removeArrayItem(index, 'tasksPlanned')}
                                     className="text-red-600 hover:text-red-800"
                                 >
-                                    ✕
+                                    Remove
                                 </button>
                             </div>
                         ))}
                         <button
                             type="button"
                             onClick={() => addArrayItem('tasksPlanned')}
-                            className="text-sm text-indigo-600 hover:text-indigo-800"
+                            className="text-sm text-[#549E7E] hover:text-[#386B55]"
                         >
                             + Add planned task
                         </button>
@@ -261,7 +251,7 @@ const CreateReport: React.FC = () => {
                                     type="text"
                                     value={blocker}
                                     onChange={(e) => handleArrayInputChange(index, 'blockers', e.target.value)}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                                     placeholder="Enter blocker"
                                 />
                                 <button
@@ -269,14 +259,14 @@ const CreateReport: React.FC = () => {
                                     onClick={() => removeArrayItem(index, 'blockers')}
                                     className="text-red-600 hover:text-red-800"
                                 >
-                                    ✕
+                                    Remove
                                 </button>
                             </div>
                         ))}
                         <button
                             type="button"
                             onClick={() => addArrayItem('blockers')}
-                            className="text-sm text-indigo-600 hover:text-indigo-800"
+                            className="text-sm text-[#549E7E] hover:text-[#386B55]"
                         >
                             + Add blocker
                         </button>
@@ -292,7 +282,7 @@ const CreateReport: React.FC = () => {
                             name="hoursWorked"
                             min="0"
                             max="168"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                             value={formData.hoursWorked}
                             onChange={handleInputChange}
                         />
@@ -306,7 +296,7 @@ const CreateReport: React.FC = () => {
                         <textarea
                             name="notes"
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#549E7E]"
                             value={formData.notes}
                             onChange={handleInputChange}
                             placeholder="Additional notes or links"
@@ -319,7 +309,7 @@ const CreateReport: React.FC = () => {
                             type="submit"
                             onClick={(e) => handleSubmit(e, 'draft')}
                             disabled={loading}
-                            className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-primary-800 disabled:opacity-50"
+                            className="bg-[#386B55] text-white px-6 py-2 rounded-lg hover:bg-[#284D3D] disabled:opacity-50"
                         >
                             {loading ? 'Saving...' : 'Save Draft'}
                         </button>
@@ -327,7 +317,7 @@ const CreateReport: React.FC = () => {
                             type="submit"
                             onClick={(e) => handleSubmit(e, 'submitted')}
                             disabled={loading}
-                            className="bg-primary-700 text-white px-6 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
+                            className="bg-[#549E7E] text-white px-6 py-2 rounded-lg hover:bg-[#48896D] disabled:opacity-50"
                         >
                             {loading ? 'Submitting...' : 'Submit Report'}
                         </button>
