@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 
 // Load .env
@@ -16,23 +17,18 @@ import managerRoutes from './routes/managerRoutes';
 import { errorHandler } from './middleware/error';
 
 const app = express();
-const PORT = process.env.PORT || 5002;
-
-console.log('🔍 Environment Check:');
-console.log('  PORT:', process.env.PORT || '5002');
-console.log('  MONGODB_URI:', process.env.MONGODB_URI ? '✅ Found' : '❌ Not found');
-
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/weekly_reports';
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(helmet());
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    credentials: true, // Allow cookies
 }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Add cookie parser
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -52,40 +48,16 @@ app.get('/api/health', (req, res) => {
 // Error handling
 app.use(errorHandler);
 
-// Database connection with SSL options
-console.log('🔗 Connecting to MongoDB Atlas...');
-
+// Database connection
 mongoose
-    .connect(MONGODB_URI, {
-        // SSL/TLS options
-        ssl: true,
-        tlsAllowInvalidCertificates: true,  // Development only
-        tlsAllowInvalidHostnames: true,     // Development only
-        retryWrites: true,
-        w: 'majority',
-    })
+    .connect(process.env.MONGODB_URI!)
     .then(() => {
-        console.log('✅ MongoDB Atlas connected successfully!');
-        console.log('📊 Database:', mongoose.connection.db?.databaseName || 'Unknown');
+        console.log('MongoDB connected successfully');
         app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`);
-            console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+            console.log(`Server running on port ${PORT}`);
         });
     })
     .catch((error) => {
-        console.error('❌ MongoDB connection error:', error.message);
-        console.log('💡 Trying alternative connection method...');
-        // Try without SSL options
-        mongoose
-            .connect(MONGODB_URI)
-            .then(() => {
-                console.log('✅ MongoDB Atlas connected successfully (without SSL options)!');
-                app.listen(PORT, () => {
-                    console.log(`🚀 Server running on port ${PORT}`);
-                });
-            })
-            .catch((err) => {
-                console.error('❌ MongoDB connection failed:', err.message);
-                process.exit(1);
-            });
+        console.error('MongoDB connection error:', error);
+        process.exit(1);
     });

@@ -54,12 +54,21 @@ const ManagerDashboard: React.FC = () => {
         fetchDashboardStats();
     }, []);
 
+    // Update the fetchDashboardStats function
     const fetchDashboardStats = async () => {
         try {
             const response = await axios.get(`${API_URL}/manager/dashboard`);
             const data = response.data.stats;
-            // Add late reports (example: 30% of pending are late)
-            data.lateReports = Math.floor(data.pendingReports * 0.3);
+
+            // Calculate late reports from actual data
+            const allReports = response.data.reports || [];
+            const lateReports = allReports.filter((r: any) => {
+                const weekEnd = new Date(r.weekEnd);
+                const now = new Date();
+                return r.status === 'draft' && now > weekEnd;
+            }).length;
+
+            data.lateReports = lateReports;
             setStats(data);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Failed to fetch dashboard stats');
@@ -163,7 +172,7 @@ const ManagerDashboard: React.FC = () => {
     return (
         <Layout>
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">📊 Manager Dashboard</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Manager Dashboard</h1>
                 <p className="text-gray-600">Welcome back, {user?.name}! Here's your team overview</p>
             </div>
 
@@ -177,7 +186,7 @@ const ManagerDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-gray-900 mt-1">{stats.totalReports}</p>
                         </div>
                         <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-xl">
-                            📊
+
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">This week</p>
@@ -191,7 +200,7 @@ const ManagerDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-yellow-600 mt-1">{stats.pendingReports}</p>
                         </div>
                         <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-xl">
-                            ⏳
+
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Awaiting submission</p>
@@ -205,7 +214,7 @@ const ManagerDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-red-600 mt-1">{stats.lateReports || 0}</p>
                         </div>
                         <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center text-xl">
-                            ⚠️
+
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Overdue submissions</p>
@@ -219,7 +228,7 @@ const ManagerDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-green-600 mt-1">{stats.complianceRate}%</p>
                         </div>
                         <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-xl">
-                            ✅
+
                         </div>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1.5 mt-2">
@@ -238,7 +247,7 @@ const ManagerDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-purple-600 mt-1">{stats.openBlockers}</p>
                         </div>
                         <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-xl">
-                            🚨
+
                         </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">Needs attention</p>
@@ -248,7 +257,7 @@ const ManagerDashboard: React.FC = () => {
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">📈 Submission Trend</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Submission Trend</h3>
                     <Line
                         data={trendChartData}
                         options={{
@@ -270,7 +279,7 @@ const ManagerDashboard: React.FC = () => {
                     />
                 </div>
                 <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 Reports by Project</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Reports by Project</h3>
                     <Bar
                         data={projectChartData}
                         options={{
@@ -295,7 +304,7 @@ const ManagerDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 Submission Status</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Submission Status</h3>
                     <div className="flex justify-center">
                         <div className="w-64 h-64">
                             <Doughnut
@@ -313,7 +322,7 @@ const ManagerDashboard: React.FC = () => {
                     </div>
                 </div>
                 <div className="bg-white rounded-lg shadow-md p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">📋 Quick Stats</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
                     <div className="space-y-4">
                         <div className="flex justify-between items-center border-b pb-2">
                             <span className="text-gray-600">Total Team Members</span>

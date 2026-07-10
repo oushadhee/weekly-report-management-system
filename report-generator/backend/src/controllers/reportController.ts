@@ -25,9 +25,9 @@ export const createReport = async (req: AuthRequest, res: Response) => {
             project,
             tasksCompleted,
             tasksPlanned,
-            blockers,
-            hoursWorked,
-            notes,
+            blockers: blockers || [],
+            hoursWorked: hoursWorked || 0,
+            notes: notes || '',
         });
 
         res.status(201).json({
@@ -125,6 +125,35 @@ export const submitReport = async (req: AuthRequest, res: Response) => {
         res.json({
             success: true,
             report,
+        });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteReport = async (req: AuthRequest, res: Response) => {
+    try {
+        const report = await Report.findOne({
+            _id: req.params.id,
+            user: req.user?._id,
+        });
+
+        if (!report) {
+            return res.status(404).json({ message: 'Report not found' });
+        }
+
+        // Only allow deleting draft reports
+        if (report.status === 'submitted') {
+            return res.status(400).json({
+                message: 'Cannot delete a submitted report',
+            });
+        }
+
+        await report.deleteOne();
+
+        res.json({
+            success: true,
+            message: 'Report deleted successfully',
         });
     } catch (error: any) {
         res.status(500).json({ message: error.message });

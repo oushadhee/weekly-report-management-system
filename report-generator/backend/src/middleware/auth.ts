@@ -1,4 +1,3 @@
-// backend/src/middleware/auth.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/User';
@@ -13,10 +12,19 @@ export const protect = async (
     next: NextFunction
 ) => {
     try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
+        let token;
+
+        // Check for token in cookies first
+        if (req.cookies && req.cookies.token) {
+            token = req.cookies.token;
+        }
+        // Check for token in Authorization header (for mobile/API clients)
+        else if (req.header('Authorization')?.startsWith('Bearer ')) {
+            token = req.header('Authorization')?.replace('Bearer ', '');
+        }
 
         if (!token) {
-            throw new Error();
+            return res.status(401).json({ message: 'Please authenticate' });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
@@ -25,7 +33,7 @@ export const protect = async (
         const user = await User.findById(decoded.id);
 
         if (!user) {
-            throw new Error();
+            return res.status(401).json({ message: 'Please authenticate' });
         }
 
         req.user = user;
@@ -43,7 +51,7 @@ export const authorize = (...roles: string[]) => {
 
         if (!roles.includes(req.user.role)) {
             return res.status(403).json({
-                message: `User role ${req.user.role} is not authorized`
+                message: `User role ${req.user.role} is not authorized to access this route`,
             });
         }
 

@@ -193,13 +193,13 @@ const Charts: React.FC = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">📉 Analytics & Charts</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">Analytics & Charts</h1>
                         <p className="text-gray-600">Visual insights into team performance</p>
                     </div>
                     <select
                         value={timeRange}
                         onChange={(e) => setTimeRange(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                        className="px-3 py-2 border border-primary-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                     >
                         <option value="4">Last 4 Weeks</option>
                         <option value="8">Last 8 Weeks</option>
@@ -230,7 +230,7 @@ const Charts: React.FC = () => {
                 {/* Charts Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">📈 Submission Trend</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Submission Trend</h3>
                         <Line
                             data={trendChartData}
                             options={{
@@ -254,7 +254,7 @@ const Charts: React.FC = () => {
                     </div>
 
                     <div className="bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">📊 Reports by Project</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Reports by Project</h3>
                         <Bar
                             data={projectChartData}
                             options={{
@@ -273,7 +273,7 @@ const Charts: React.FC = () => {
                     </div>
 
                     <div className="bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">🍩 Submission Status</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Submission Status</h3>
                         <div className="flex justify-center">
                             <div className="w-64 h-64">
                                 <Doughnut
@@ -290,7 +290,7 @@ const Charts: React.FC = () => {
                     </div>
 
                     <div className="bg-white shadow-md rounded-lg p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">👥 Member Activity</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Member Activity</h3>
                         <Bar
                             data={memberActivityData}
                             options={{
@@ -309,7 +309,7 @@ const Charts: React.FC = () => {
                     </div>
 
                     <div className="bg-white shadow-md rounded-lg p-6 lg:col-span-2">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">📡 Team Performance Radar</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Team Performance Radar</h3>
                         <div className="flex justify-center">
                             <div className="w-96 h-96">
                                 <Radar

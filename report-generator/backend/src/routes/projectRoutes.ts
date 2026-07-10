@@ -1,4 +1,3 @@
-// backend/src/routes/projectRoutes.ts
 import express from 'express';
 import {
     createProject,
@@ -9,6 +8,7 @@ import {
     assignTeamMembers,
 } from '../controllers/projectController';
 import { protect, authorize } from '../middleware/auth';
+import { validateProject, handleValidationErrors } from '../middleware/validation';
 
 const router = express.Router();
 
@@ -16,11 +16,11 @@ router.use(protect);
 
 router.route('/')
     .get(getProjects)
-    .post(authorize('manager'), createProject);
+    .post(authorize('manager'), validateProject, handleValidationErrors, createProject);
 
 router.route('/:id')
     .get(getProjectById)
-    .put(authorize('manager'), updateProject)
+    .put(authorize('manager'), validateProject, handleValidationErrors, updateProject)
     .delete(authorize('manager'), deleteProject);
 
 router.put('/:id/assign', authorize('manager'), assignTeamMembers);

@@ -43,7 +43,7 @@ const Profile: React.FC = () => {
     return (
         <Layout>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">👤 My Profile</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">My Profile</h1>
 
                 {message && (
                     <div className={`px-4 py-3 rounded-lg mb-4 ${message.includes('success')
@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
                     {/* Profile Image */}
                     <div className="flex flex-col items-center mb-6">
                         <div className="relative">
-                            <div className="w-32 h-32 rounded-full bg-indigo-100 flex items-center justify-center text-6xl overflow-hidden">
+                            <div className="w-32 h-32 rounded-full bg-primary-100 flex items-center justify-center text-6xl overflow-hidden">
                                 {profileImage ? (
                                     <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
@@ -67,9 +67,9 @@ const Profile: React.FC = () => {
                             </div>
                             <button
                                 onClick={() => fileInputRef.current?.click()}
-                                className="absolute bottom-0 right-0 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700"
+                                className="absolute bottom-0 right-0 bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600"
                             >
-                                📷
+                                Photo
                             </button>
                             <input
                                 type="file"
@@ -79,7 +79,7 @@ const Profile: React.FC = () => {
                                 className="hidden"
                             />
                         </div>
-                        <p className="text-sm text-gray-500 mt-2">Click the camera icon to upload photo</p>
+                        <p className="text-sm text-gray-500 mt-2">Click the button to upload photo</p>
                     </div>
 
                     {/* Profile Info */}
@@ -150,7 +150,7 @@ const Profile: React.FC = () => {
                                     <button
                                         onClick={handleUpdateProfile}
                                         disabled={loading}
-                                        className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                                        className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
                                     >
                                         {loading ? 'Saving...' : 'Save Changes'}
                                     </button>
@@ -168,9 +168,9 @@ const Profile: React.FC = () => {
                             ) : (
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
+                                    className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-primary-600"
                                 >
-                                    ✏️ Edit Profile
+                                    Edit Profile
                                 </button>
                             )}
                         </div>
@@ -180,7 +180,7 @@ const Profile: React.FC = () => {
                 {/* Account Stats */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white shadow-md rounded-lg p-4 text-center">
-                        <p className="text-2xl font-bold text-indigo-600">12</p>
+                        <p className="text-2xl font-bold text-primary-600">12</p>
                         <p className="text-sm text-gray-600">Total Reports</p>
                     </div>
                     <div className="bg-white shadow-md rounded-lg p-4 text-center">

@@ -120,7 +120,7 @@ const CreateReport: React.FC = () => {
     return (
         <Layout>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">📝 Create Weekly Report</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">Create Weekly Report</h1>
 
                 {error && (
                     <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
@@ -319,7 +319,7 @@ const CreateReport: React.FC = () => {
                             type="submit"
                             onClick={(e) => handleSubmit(e, 'draft')}
                             disabled={loading}
-                            className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 disabled:opacity-50"
+                            className="bg-primary-500 text-white px-6 py-2 rounded-lg hover:bg-primary-800 disabled:opacity-50"
                         >
                             {loading ? 'Saving...' : 'Save Draft'}
                         </button>
@@ -327,7 +327,7 @@ const CreateReport: React.FC = () => {
                             type="submit"
                             onClick={(e) => handleSubmit(e, 'submitted')}
                             disabled={loading}
-                            className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                            className="bg-primary-700 text-white px-6 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
                         >
                             {loading ? 'Submitting...' : 'Submit Report'}
                         </button>

@@ -143,9 +143,9 @@ const AllReports: React.FC = () => {
 
     const getStatusBadge = (status: string) => {
         if (status === 'submitted') {
-            return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">✅ Submitted</span>;
+            return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Submitted</span>;
         }
-        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">📝 Draft</span>;
+        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Draft</span>;
     };
 
     const handleViewReport = (report: Report) => {
@@ -171,7 +171,7 @@ const AllReports: React.FC = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">📊 All Reports</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">All Reports</h1>
                         <p className="text-gray-600">View and manage all team reports</p>
                     </div>
                     <div className="text-sm text-gray-500">
@@ -331,7 +331,7 @@ const AllReports: React.FC = () => {
                                         <tr key={report._id} className="hover:bg-gray-50">
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
-                                                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-sm font-bold text-indigo-600">
+                                                    <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-sm font-bold text-primary-600">
                                                         {report.user?.name?.charAt(0) || 'U'}
                                                     </div>
                                                     <div className="ml-3">
@@ -366,7 +366,7 @@ const AllReports: React.FC = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <button
                                                     onClick={() => handleViewReport(report)}
-                                                    className="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700"
+                                                    className="px-3 py-1 bg-primary-500 text-white rounded-md text-sm hover:bg-primary-600"
                                                 >
                                                     View
                                                 </button>
@@ -467,7 +467,7 @@ const AllReports: React.FC = () => {
 
                             <button
                                 onClick={closeModal}
-                                className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+                                className="w-full bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600"
                             >
                                 Close
                             </button>

@@ -50,16 +50,14 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
         const currentWeek = new Date();
         const weekStart = new Date(currentWeek);
         weekStart.setDate(currentWeek.getDate() - currentWeek.getDay());
-
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
 
-        // Total team members
         const totalMembers = await User.countDocuments({
             role: { $in: ['team_member', 'manager'] },
         });
 
-        // Reports this week
+        // Get all reports for this week
         const weeklyReports = await Report.find({
             weekStart: { $gte: weekStart, $lte: weekEnd },
         });
@@ -68,18 +66,25 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
             (r) => r.status === 'submitted'
         );
 
-        // Open blockers
-        const allReports = await Report.find({
-            status: 'submitted',
+        // Calculate late reports
+        const lateReports = weeklyReports.filter((r) => {
+            const endOfWeek = new Date(r.weekEnd);
+            endOfWeek.setHours(23, 59, 59, 999);
+            const now = new Date();
+            return r.status === 'draft' && now > endOfWeek;
         });
 
+        // Open blockers
+        const allReports = await Report.find({
+            status: { $in: ['submitted', 'late'] },
+        });
         const openBlockers = allReports.filter((r) => r.blockers && r.blockers.length > 0);
 
         // Reports by project
         const reportsByProject = await Report.aggregate([
             {
                 $match: {
-                    status: 'submitted',
+                    status: { $in: ['submitted', 'late'] },
                 },
             },
             {
@@ -107,18 +112,17 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
             },
         ]);
 
-        // Weekly trend (last 8 weeks)
+        // Weekly trend
         const trendData = [];
         for (let i = 7; i >= 0; i--) {
             const weekStartDate = new Date(weekStart);
             weekStartDate.setDate(weekStartDate.getDate() - i * 7);
-
             const weekEndDate = new Date(weekStartDate);
             weekEndDate.setDate(weekStartDate.getDate() + 6);
 
             const count = await Report.countDocuments({
                 weekStart: { $gte: weekStartDate, $lte: weekEndDate },
-                status: 'submitted',
+                status: { $in: ['submitted', 'late'] },
             });
 
             trendData.push({
@@ -133,7 +137,8 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
                 totalMembers,
                 totalReports: weeklyReports.length,
                 submittedReports: submittedReports.length,
-                pendingReports: weeklyReports.length - submittedReports.length,
+                pendingReports: weeklyReports.length - submittedReports.length - lateReports.length,
+                lateReports: lateReports.length,
                 complianceRate: totalMembers > 0
                     ? ((submittedReports.length / totalMembers) * 100).toFixed(1)
                     : 0,
@@ -141,6 +146,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
                 reportsByProject,
                 trendData,
             },
+            reports: weeklyReports, // Send reports for late calculation
         });
     } catch (error: any) {
         res.status(500).json({ message: error.message });

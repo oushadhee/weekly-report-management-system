@@ -49,9 +49,9 @@ const ReportHistory: React.FC = () => {
 
     const getStatusBadge = (status: string) => {
         if (status === 'submitted') {
-            return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">✅ Submitted</span>;
+            return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Submitted</span>;
         }
-        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">📝 Draft</span>;
+        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Draft</span>;
     };
 
     const filteredReports = filterStatus === 'all'
@@ -73,7 +73,7 @@ const ReportHistory: React.FC = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">📜 Report History</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">Report History</h1>
                         <p className="text-gray-600">View all your past reports</p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -98,7 +98,7 @@ const ReportHistory: React.FC = () => {
 
                 {reports.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-lg shadow">
-                        <p className="text-4xl mb-4">📭</p>
+                        <p className="text-gray-500">No reports yet</p>
                         <p className="text-gray-500">No reports yet. Create your first weekly report!</p>
                     </div>
                 ) : (

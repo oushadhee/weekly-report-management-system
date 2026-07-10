@@ -12,6 +12,7 @@ import CreateReport from './pages/CreateReport';
 import MyReports from './pages/MyReports';
 import ReportHistory from './pages/team/ReportHistory';
 import Profile from './pages/shared/Profile';
+import EditReport from './pages/EditReport';
 
 // Manager Pages
 import ManagerDashboard from './pages/manager/ManagerDashboard';
@@ -19,7 +20,7 @@ import AllReports from './pages/manager/AllReports';
 import Projects from './pages/shared/Projects';
 import Charts from './pages/manager/Charts';
 import TeamMembers from './pages/manager/TeamMembers';
-import AIAssistant from './pages/manager/AIAssistant';
+
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -60,6 +61,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/my-reports" element={<PrivateRoute><MyReports /></PrivateRoute>} />
       <Route path="/report-history" element={<PrivateRoute><ReportHistory /></PrivateRoute>} />
       <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+      <Route path="/edit-report/:id" element={<PrivateRoute><EditReport /></PrivateRoute>} />
 
       {/* Manager Routes */}
       <Route path="/manager/dashboard" element={<ManagerRoute><ManagerDashboard /></ManagerRoute>} />
@@ -67,7 +69,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/manager/projects" element={<ManagerRoute><Projects /></ManagerRoute>} />
       <Route path="/manager/charts" element={<ManagerRoute><Charts /></ManagerRoute>} />
       <Route path="/manager/team-members" element={<ManagerRoute><TeamMembers /></ManagerRoute>} />
-      <Route path="/manager/ai-assistant" element={<ManagerRoute><AIAssistant /></ManagerRoute>} />
+
 
       {/* Default */}
       <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />

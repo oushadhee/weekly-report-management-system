@@ -138,11 +138,11 @@ const Projects: React.FC = () => {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'active':
-                return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">🟢 Active</span>;
+                return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>;
             case 'inactive':
-                return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">⚪ Inactive</span>;
+                return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Inactive</span>;
             case 'completed':
-                return <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">🔵 Completed</span>;
+                return <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Completed</span>;
             default:
                 return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">{status}</span>;
         }
@@ -164,12 +164,12 @@ const Projects: React.FC = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">📁 Projects</h1>
+                        <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
                         <p className="text-gray-600">Manage your team projects and categories</p>
                     </div>
                     <button
                         onClick={openCreateModal}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+                        className="bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 flex items-center gap-2"
                     >
                         <span className="text-xl">+</span> Add Project
                     </button>
@@ -207,13 +207,13 @@ const Projects: React.FC = () => {
                                         onClick={() => openEditModal(project)}
                                         className="text-blue-600 hover:text-blue-800 text-sm"
                                     >
-                                        ✏️
+                                        Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(project._id)}
                                         className="text-red-600 hover:text-red-800 text-sm"
                                     >
-                                        🗑️
+                                        Delete
                                     </button>
                                 </div>
                             </div>
@@ -238,7 +238,6 @@ const Projects: React.FC = () => {
 
                 {projects.length === 0 && !loading && (
                     <div className="text-center py-12 bg-white rounded-lg shadow">
-                        <p className="text-4xl mb-4">📂</p>
                         <p className="text-gray-500">No projects yet. Create your first project!</p>
                     </div>
                 )}
@@ -249,7 +248,7 @@ const Projects: React.FC = () => {
                         <div className="bg-white rounded-lg max-w-md w-full p-6">
                             <div className="flex justify-between items-start mb-4">
                                 <h2 className="text-xl font-bold text-gray-900">
-                                    {editingProject ? '✏️ Edit Project' : '📁 Add New Project'}
+                                    {editingProject ? 'Edit Project' : 'Add New Project'}
                                 </h2>
                                 <button
                                     onClick={() => {
@@ -258,7 +257,7 @@ const Projects: React.FC = () => {
                                     }}
                                     className="text-gray-500 hover:text-gray-700 text-2xl"
                                 >
-                                    ✕
+                                    X
                                 </button>
                             </div>
 
@@ -303,9 +302,9 @@ const Projects: React.FC = () => {
                                             onChange={handleInputChange}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         >
-                                            <option value="active">🟢 Active</option>
-                                            <option value="inactive">⚪ Inactive</option>
-                                            <option value="completed">🔵 Completed</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                            <option value="completed">Completed</option>
                                         </select>
                                     </div>
 
@@ -325,7 +324,7 @@ const Projects: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                                        className="w-full bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 disabled:opacity-50"
                                     >
                                         {loading ? 'Saving...' : editingProject ? 'Update Project' : 'Create Project'}
                                     </button>

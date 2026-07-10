@@ -158,7 +158,7 @@ const TeamDashboard: React.FC = () => {
     return (
         <Layout>
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.name}! 👋</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Welcome back, {user?.name}! </h1>
                 <p className="text-gray-600">Here's your weekly report summary</p>
             </div>
 
@@ -171,7 +171,7 @@ const TeamDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-gray-900 mt-1">{stats.total}</p>
                         </div>
                         <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-2xl">
-                            📊
+
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@ const TeamDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-green-600 mt-1">{stats.submitted}</p>
                         </div>
                         <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">
-                            ✅
+
                         </div>
                     </div>
                 </div>
@@ -195,7 +195,7 @@ const TeamDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-yellow-600 mt-1">{stats.pending}</p>
                         </div>
                         <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-2xl">
-                            ⏳
+
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@ const TeamDashboard: React.FC = () => {
                             <p className="text-2xl font-bold text-indigo-600 mt-1">{stats.totalHours}h</p>
                         </div>
                         <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-2xl">
-                            ⏰
+
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@ const TeamDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        📈 Submission Progress
+                        Submission Progress
                     </h3>
                     <Line
                         data={lineChartData}
@@ -242,7 +242,7 @@ const TeamDashboard: React.FC = () => {
 
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        📊 Submission Status
+                        Submission Status
                     </h3>
                     <div className="flex justify-center">
                         <div className="w-64 h-64">
@@ -265,7 +265,7 @@ const TeamDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        ⏰ Hours Worked Trend
+                        Hours Worked Trend
                     </h3>
                     <Bar
                         data={barChartData}
@@ -287,11 +287,10 @@ const TeamDashboard: React.FC = () => {
 
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        🚨 Open Blockers
+                        Open Blockers
                     </h3>
                     {stats.totalBlockers === 0 ? (
                         <div className="text-center py-8 text-gray-500">
-                            <p className="text-4xl mb-2">🎉</p>
                             <p>No blockers! Great job!</p>
                         </div>
                     ) : (

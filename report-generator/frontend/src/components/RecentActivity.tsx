@@ -64,7 +64,7 @@ const RecentActivity: React.FC = () => {
             reportId: `mock-report-${i}`,
             timestamp: new Date(Date.now() - i * 3600000).toISOString(),
             message: `${names[i % names.length]} ${types[i % 3] === 'submitted' ? 'submitted' :
-                    types[i % 3] === 'edited' ? 'edited' : 'created'
+                types[i % 3] === 'edited' ? 'edited' : 'created'
                 } a report for ${projects[i % projects.length]}`
         }));
     };
@@ -72,15 +72,15 @@ const RecentActivity: React.FC = () => {
     const getActivityIcon = (type: string) => {
         switch (type) {
             case 'submitted':
-                return '✅';
+                return '';
             case 'edited':
-                return '✏️';
+                return '';
             case 'created':
-                return '📝';
+                return '';
             case 'deleted':
-                return '🗑️';
+                return '';
             default:
-                return '📋';
+                return '';
         }
     };
 
@@ -124,14 +124,14 @@ const RecentActivity: React.FC = () => {
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">🔄 Recent Activity</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
                 <span className="text-xs text-gray-500">Live feed</span>
             </div>
 
             <div className="space-y-3 max-h-80 overflow-y-auto">
                 {activities.length === 0 ? (
                     <div className="text-center py-8 text-gray-500">
-                        <p className="text-4xl mb-2">📭</p>
+                        <p className="text-gray-500 text-center">No recent activity</p>
                         <p>No recent activity</p>
                     </div>
                 ) : (

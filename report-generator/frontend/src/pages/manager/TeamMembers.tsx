@@ -25,13 +25,13 @@ const TeamMembers: React.FC = () => {
     return (
         <Layout>
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-2xl font-bold text-gray-900 mb-6">👥 Team Members</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">Team Members</h1>
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
                         {members.map((member: any) => (
                             <div key={member._id} className="border rounded-lg p-4 hover:shadow-lg transition">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-xl font-bold text-indigo-600">
+                                    <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-xl font-bold text-primary-600">
                                         {member.name?.charAt(0)}
                                     </div>
                                     <div>
